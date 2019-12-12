@@ -1,9 +1,9 @@
 {
-  "name": "rivet-front",
+  "name": "angular-certifiacion",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.config.json --port 4250 --open",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -11,7 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "~8.2.3",
+    "@angular/animations": "^8.2.14",
     "@angular/common": "~8.2.3",
     "@angular/compiler": "~8.2.3",
     "@angular/core": "~8.2.3",
@@ -19,6 +19,9 @@
     "@angular/platform-browser": "~8.2.3",
     "@angular/platform-browser-dynamic": "~8.2.3",
     "@angular/router": "~8.2.3",
+    "@ng-bootstrap/ng-bootstrap": "^5.1.4",
+    "angular-animations": "0.0.10",
+    "normalize.css": "^8.0.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
