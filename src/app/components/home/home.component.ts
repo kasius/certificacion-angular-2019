@@ -32,7 +32,12 @@ import { Subject, Subscription } from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy {
 
   // declaraciones
+  public page = 0;
+  public pageSize = 9;
+  public previousPage = 0;
   public movies = [];
+  public moviesStorage = [];
+  public objectMovie: any;
   public subscriptionSearchData: Subscription;
   private componentDestroyed: Subject<boolean> = new Subject();
   public message = null;
@@ -71,6 +76,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         res => {
+          this.objectMovie = res;
+          this.page = res.page;
+          this.moviesStorage = res.results;
           this.movies = res.results.slice(0, 9);
           console.log(this.movies);
         },
@@ -80,6 +88,26 @@ export class HomeComponent implements OnInit, OnDestroy {
         () => {
           // petición finalizada
         });
+  }
+
+  // rescatamos peliculas según paginación
+  public loadPage(page: number) {
+    if (page !== this.previousPage) {
+      this.previousPage = page;
+      this.loadData();
+    }
+  }
+
+
+  public loadData() {
+    this.movieService.getPopular('G', this.page)
+      .subscribe(
+        res => {
+          res.results.forEach(movie => this.moviesStorage.push(movie));
+        },
+        err => console.log(err),
+        () => { }// petición completada
+      );
   }
 
   // rescatamos peliculas populares

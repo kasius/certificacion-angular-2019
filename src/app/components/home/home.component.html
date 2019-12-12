@@ -6,18 +6,20 @@
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
+    page: {{page}}
+    moviesStorage: {{moviesStorage.length}}
     <button type="button" class="btn btn-default btn-sm" [routerLink]="['/home']">Populares</button>
     <button type="button" class="btn btn-default btn-sm" [routerLink]="['/home/G']">Niños</button>
     <button type="button" class="btn btn-default btn-sm" [routerLink]="['/home/now']">En Teatros</button>
   </div>
 </div>
-<div *ngIf="movies.length > 0" [@listAnimation]="movies.length" class="row uk-grid">
-  <div *ngFor="let movie of movies" class="col-4 uk-row-first mt5">
+<div *ngIf="moviesStorage.length > 0" [@listAnimation]="moviesStorage.length" class="row uk-grid">
+  <div *ngFor="let movie of moviesStorage | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize"
+    class="col-4 uk-row-first mt5">
     <div class="md-card pointer mb10" [routerLink]="['/detail', movie.id]">
       <div class="md-card-content container pr0 pl0">
         <div>
-          <img width="100%" src="https://image.tmdb.org/t/p/w300/{{movie.poster_path}}"
-            alt="{{movie.poster_path}}">
+          <img width="100%" src="https://image.tmdb.org/t/p/w300/{{movie.poster_path}}" alt="{{movie.poster_path}}">
           <div class="overlay text-center">
             <h3>Popularidad: {{movie.popularity}}</h3>
             <h4>Votos: {{movie.vote_count}}</h4>
@@ -35,6 +37,11 @@
       </div>
     </div>
   </div>
+  <div class="col-12 text-center">
+    <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="objectMovie.total_pages" [maxSize]="25"
+      [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+  </div>
+
 </div>
 <div *ngIf="movies.length === 0">
   Cargando...

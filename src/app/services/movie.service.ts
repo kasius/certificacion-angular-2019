@@ -12,7 +12,7 @@ export class MovieService {
 
   constructor(private http: HttpClient) { }
 
-  getPopular(category: string) {
+  getPopular(category: string, page?: any) {
     let url = `${environment.api}/discover/movie`;
     switch (true) {
       case !category:
@@ -31,6 +31,10 @@ export class MovieService {
         category === '2015':
         url += `?primary_release_year=${category}&sort_by=vote_average.desc`;
         break;
+    }
+
+    if (page) {
+      url += `&page=${page}`;
     }
 
     return this.http.get<any>(url);

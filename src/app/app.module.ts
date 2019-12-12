@@ -6,6 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+
 // Router
 import { AppRoutingModule } from './app-routing.module';
 
