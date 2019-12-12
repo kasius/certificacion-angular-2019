@@ -32,6 +32,7 @@ import { Subject, Subscription } from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy {
 
   // declaraciones
+  public viewCount = 9;
   public page = 0;
   public pageSize = 9;
   public previousPage = 0;
@@ -67,6 +68,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscriptionSearchData.unsubscribe();
   }
 
+  // cambio cantidad de peliculas a visualizar vía
+  public changeViewMovie() {
+    this.movies = [];
+    this.movies = this.moviesStorage.slice(0, this.viewCount);
+  }
+
   // rescatamos peliculas populares
   public getPopular(category: string) {
     this.movies = [];
@@ -76,10 +83,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         res => {
-          this.objectMovie = res;
-          this.page = res.page;
           this.moviesStorage = res.results;
-          this.movies = res.results.slice(0, 9);
+          this.movies = res.results.slice(0, this.viewCount);
           console.log(this.movies);
         },
         err => {
@@ -88,26 +93,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         () => {
           // petición finalizada
         });
-  }
-
-  // rescatamos peliculas según paginación
-  public loadPage(page: number) {
-    if (page !== this.previousPage) {
-      this.previousPage = page;
-      this.loadData();
-    }
-  }
-
-
-  public loadData() {
-    this.movieService.getPopular('G', this.page)
-      .subscribe(
-        res => {
-          res.results.forEach(movie => this.moviesStorage.push(movie));
-        },
-        err => console.log(err),
-        () => { }// petición completada
-      );
   }
 
   // rescatamos peliculas populares
@@ -122,7 +107,8 @@ export class HomeComponent implements OnInit, OnDestroy {
           if (res.results.length === 0) {
             this.message = 'no existen resultados para tú búsqueda';
           }
-          this.movies = res.results.slice(0, 9);
+          this.moviesStorage = res.results;
+          this.movies = res.results.slice(0, this.viewCount);
           console.log(this.movies);
         },
         err => {
